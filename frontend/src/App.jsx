@@ -397,8 +397,8 @@ function App() {
                 required
               />
               <input
+                type="date"
                 className="w-full rounded-xl border border-[#c9d8c8] bg-[#ffffff] px-4 py-2.5 outline-none focus:border-[#2f7a62]"
-                placeholder="Expiry (e.g. 31/12/2026)"
                 value={newExpiryDate}
                 onChange={(e) => setNewExpiryDate(e.target.value)}
                 required

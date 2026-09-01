@@ -461,9 +461,11 @@ function App() {
                               onChange={(e) => setEditingName(e.target.value)}
                             />
                             <input
+                              type="date"
                               className="rounded-lg border border-[#c9d8c8] bg-[#ffffff] px-3 py-2"
                               value={editingExpiry}
                               onChange={(e) => setEditingExpiry(e.target.value)}
+                              required
                             />
                           </div>
                         ) : (

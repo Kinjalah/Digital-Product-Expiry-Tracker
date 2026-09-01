@@ -23,6 +23,7 @@ function App() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const [products, setProducts] = useState([]);
   const [expiring, setExpiring] = useState([]);
@@ -316,14 +317,24 @@ function App() {
               required
             />
 
-            <input
-                className="w-full rounded-xl border border-[#c9d8c8] bg-[#ffffff] px-4 py-2.5 outline-none focus:border-[#2f7a62]"
-              placeholder="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="flex gap-2">
+              <input
+                className="flex-1 rounded-xl border border-[#c9d8c8] bg-[#ffffff] px-4 py-2.5 outline-none focus:border-[#2f7a62]"
+                placeholder="Password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+
+              <button
+                type="button"
+                className="rounded-xl border border-[#9db39d] px-3 py-2 text-sm text-[#2f5f4c]"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
 
             <button
                 className="w-full rounded-xl bg-[#2f7a62] text-[#f8f4eb] font-semibold py-2.5 hover:bg-[#25654f] transition disabled:opacity-50"

@@ -32,11 +32,11 @@ import com.expirytracker.repository.UserRepository;
 public class ProductService {
 
     private static final List<DateTimeFormatter> INPUT_DATE_FORMATS = List.of(
-            DateTimeFormatter.ofPattern("dd/MM/uuuu"),
-            DateTimeFormatter.ofPattern("d/M/uuuu"),
+            DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(java.time.format.ResolverStyle.STRICT),
+            DateTimeFormatter.ofPattern("d/M/uuuu").withResolverStyle(java.time.format.ResolverStyle.STRICT),
             DateTimeFormatter.ofPattern("dd-MM-uuuu"),
             DateTimeFormatter.ofPattern("d-M-uuuu"),
-            DateTimeFormatter.ofPattern("uuuu/MM/dd"),
+            DateTimeFormatter.ofPattern("uuuu/MM/dd").withResolverStyle(java.time.format.ResolverStyle.STRICT),
             DateTimeFormatter.ofPattern("uuuu-MM-dd"),
             DateTimeFormatter.ofPattern("MM/uuuu"),
             DateTimeFormatter.ofPattern("MM-uuuu"),
@@ -204,7 +204,7 @@ public class ProductService {
     }
 
     private String cleanText(String text) {
-        return text
+        return text.replace('|', '/')
                 .replaceAll("[^a-zA-Z0-9:/\\-.\\s]", " ")
                 .replaceAll("\\s+", " ")
                 .trim();
@@ -212,7 +212,7 @@ public class ProductService {
 
     private String normalizeManualExpiryDate(String rawInput) {
         String normalized = extractExpiryDate(rawInput);
-        if ("Not Found".equalsIgnoreCase(normalized)) {
+        if ("Not Found".equalsIgnoreCase(normalized) || parseDate(normalized).isEmpty()) {
             throw new ResponseStatusException(
                     BAD_REQUEST,
                     "Unsupported expiry date format. Supported: DD/MM/YYYY, YYYY/MM, MM/YYYY, text month (e.g., Feb 2025), YYYY, and keyword-based formats like EXP, BEST BEFORE, USE BY"
@@ -439,6 +439,15 @@ public class ProductService {
                 return Optional.of(LocalDate.parse(cleaned, formatter));
             } catch (DateTimeParseException ignored) {
                 // Try next known format.
+            }
+        }
+
+        if (cleaned.matches("\\d{4}/\\d{2}")) {
+            try {
+                return Optional.of(java.time.YearMonth.parse(cleaned,
+                        DateTimeFormatter.ofPattern("uuuu/MM")).atDay(1));
+            } catch (DateTimeParseException ignored) {
+                return Optional.empty();
             }
         }
 

@@ -414,7 +414,7 @@ public class ProductService {
         Optional<LocalDate> parsed = parseDate(product.getExpiryDate());
         if (parsed.isPresent()) {
             daysRemaining = ChronoUnit.DAYS.between(LocalDate.now(), parsed.get());
-            expiringSoon = daysRemaining >= 0 && daysRemaining <= 8;
+            expiringSoon = daysRemaining >= 0 && daysRemaining <= 7;
         }
 
         return new ProductResponse(

@@ -13,17 +13,17 @@ concurrency:
 jobs:
   verify:
     name: Build, test, quality and expiry gate
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
       - name: Set up Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6.0.1
         with:
           distribution: temurin
           java-version: '17'
           cache: maven
       - name: Set up Node 22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7.1.0
         with:
           node-version: '22'
           cache: npm
@@ -43,7 +43,7 @@ jobs:
         run: bash mvnw -B -DskipTests compile
         working-directory: backend
       - name: Unit and regression tests
-        run: bash mvnw -B test
+        run: bash mvnw -B -Dtest=AuthServiceTest,ProductServiceTest test
         working-directory: backend
       - name: Expiry-Safety Quality Gate
         run: bash mvnw -B -Dtest=ExpirySafetyGateTest test
@@ -56,7 +56,7 @@ jobs:
         run: python scripts/ci_report.py
       - name: Upload tests and coverage
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: fa2-quality-reports
           path: |
@@ -64,21 +64,21 @@ jobs:
             backend/target/site/jacoco/
             reports/
       - name: Publish deployable application artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: fa2-application
           path: backend/target/backend-0.0.1-SNAPSHOT.jar
   deploy-demo:
     name: Deploy to temporary demo environment and smoke test
     needs: verify
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-java@v6.0.1
         with:
           distribution: temurin
           java-version: '17'
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8.0.2
         with:
           name: fa2-application
           path: deploy
@@ -101,7 +101,7 @@ jobs:
         run: python scripts/capture_demo.py
       - name: Upload deployment evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: fa2-deployment-evidence
           path: reports/

@@ -1,0 +1,72 @@
+
+name: Digital Product Expiry Tracker CI
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build, Test, Analysis and Reporting
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      # Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Configure Java
+      - name: Set Up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+          cache-dependency-path: backend/pom.xml
+
+      # Stage 1: Build
+      - name: Build Application
+        run: mvn -B -ntp -DskipTests compile
+
+      # Stage 2: Test
+      - name: Execute Automated Tests
+        run: mvn -B -ntp test
+
+      # Stage 3: Analysis
+      - name: Generate Coverage Report
+        run: mvn -B -ntp jacoco:report
+
+      - name: Verify Coverage Report
+        run: test -f target/site/jacoco/index.html
+
+      # Stage 4: Reporting
+      - name: Upload Test Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-test-reports
+          path: backend/target/surefire-reports/
+          if-no-files-found: warn
+
+      - name: Upload Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-coverage-report
+          path: backend/target/site/jacoco/
+          if-no-files-found: warn

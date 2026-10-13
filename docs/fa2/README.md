@@ -7,7 +7,7 @@
 5. Open http://localhost:8081 for the packaged app, or http://localhost:5173 for development. Register a new demo account.
 6. Push a feature branch or open a PR to trigger `.github/workflows/fa2-ci-cd.yml`.
 7. Inspect both jobs and download quality, application and deployment evidence artifacts. Record real test totals and coverage from the run summary.
-8. Use `agile-plan.md` as the focused FA2 backlog and DoD. Check/update Jira through the actual board before capturing Jira evidence.
+8. Use `agile-plan.md` as the focused FA2 backlog and DoD. Jira plan is saved in DET-39 and boundary criteria in DET-16. Both original voices are still required.
 
 ## Evidence checklist
 
@@ -25,3 +25,6 @@
 0–10: both names and project goal. 10–28: Jira stories, sprint and DoD. 28–45: VS Code workflow and commit/PR trigger. 45–77: actual Actions stages, expiry gate, test results and coverage. 77–101: deployed app and add-item demonstration. 101–110: artifact, smoke result and both members' contribution.
 
 Record with your own voices. Do not use text-to-speech. The notice requires one 1–2 minute video submitted to Google Classroom. A PPT is supporting material.
+
+Verified CI/CD and deployment: https://github.com/Kinjalah/Digital-Product-Expiry-Tracker/actions/runs/38434460426
+Implementation merged through PR 8. The evidence demonstration includes a deliberately failed boundary test followed by the correction.

@@ -12,13 +12,13 @@ All five stories have the label `fa2-demo`. These are existing product stories p
 | DET-11 | Add an item with valid expiry details | 5 | Done |
 | DET-13 | Edit or delete an expiry record | 5 | Done |
 | DET-16 | Identify upcoming expiries | 2 | Done |
-| DET-39 | Verify each change and deploy a demo release | 5 | To Do; GitHub write access blocked |
+| DET-39 | Verify each change and deploy a demo release | 5 | In Progress; technical release verified, narration pending |
 
 The focused demonstration covers 20 points across historical and planned sprints. This total is not sprint velocity.
 
 ## Sprint plan, verified and updated in Jira
 
-DET Sprint 4, ID 136, remains future/planned with the existing 5–19 October 2026 dates. DET-39 is assigned with 5 points. Its goal now describes build, static analysis, regression tests, expiry-safety gate, artifact publication, temporary deployment and genuine evidence. The release story remains open until an actual GitHub Actions run succeeds and both voices are recorded. Historical product stories remain in Sprint 1.
+DET Sprint 4, ID 136, remains future/planned with the existing 5–19 October 2026 dates. DET-39 is assigned with 5 points. Its goal now describes build, static analysis, regression tests, expiry-safety gate, artifact publication, temporary deployment and genuine evidence. The release story remains open only for the original-voice submission. Actual GitHub runs succeeded and PR 8 is merged into main. Historical product stories remain in Sprint 1.
 
 Definition of Done is stored in DET-39. Boundary acceptance criteria have been saved in DET-16. Both students must participate in the original-voice 1–2 minute submission. Partner identity has not been confirmed.
 
@@ -50,3 +50,15 @@ Definition of Done is stored in DET-39. Boundary acceptance criteria have been s
 ## Deployment and scope
 
 The demo deployment is an isolated GitHub Actions runner with an in-memory H2 database. It ends when the job ends. The JAR can also run locally with `--spring.profiles.active=demo`. Data resets on restart. OCR and real email delivery need separate external configuration and are outside this FA2 demonstration. Existing login is demonstration-level authentication and is not a production authorization system.
+
+## Actual execution proof
+
+PR 8: https://github.com/Kinjalah/Digital-Product-Expiry-Tracker/pull/8
+
+Passing CI/CD: https://github.com/Kinjalah/Digital-Product-Expiry-Tracker/actions/runs/38434460426
+
+Controlled failure: https://github.com/Kinjalah/Digital-Product-Expiry-Tracker/actions/runs/38433923820
+
+Main push after merge: https://github.com/Kinjalah/Digital-Product-Expiry-Tracker/actions/runs/38434948921
+
+39 tests pass, 11 expiry-gate cases, zero failures/errors/skipped, 52.01% whole-backend line coverage and 12 deployed smoke checks. Genuine runner-captured screenshots include a saved edit and deletion. Deployment is temporary on the runner. Both original voices remain required.

@@ -31,9 +31,6 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
         working-directory: frontend
-      - name: Static quality analysis
-        run: npm run lint
-        working-directory: frontend
       - name: Build frontend
         run: npm run build
         working-directory: frontend
@@ -51,6 +48,9 @@ jobs:
       - name: Package and coverage report
         run: bash mvnw -B verify
         working-directory: backend
+      - name: Static quality analysis
+        run: npm run lint
+        working-directory: frontend
       - name: Generate actual CI report
         if: always()
         run: python scripts/ci_report.py
